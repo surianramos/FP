@@ -1,27 +1,35 @@
-let prevButton = document.getElementById('prev')
-let nextButton = document.getElementById('next')
-let container = document.querySelector('.contaner')
-let item = container.querySelectorAll('.list.item')
-let indicator = document.querySelector ('.indicators')
-let dots = indicator.querySelectorAll ('ul, li')
+const prevButton = document.getElementById('prev')
+const nextButton = document.getElementById('next')
+const items = document.querySelectorAll('.list .item')
+const dots = document.querySelectorAll('.indicators ul li')
+const number = document.querySelector('.indicators .number')
 
-let active =0
-let firstPosition = 0
-let lastPosition = items.length -1
+let active = 0
 
-nextButtonb.onclick =( ) => {
- let itemOld = container.querySelector('.list. item. active')
- itemOld.classList.remove('active')
- 
- active = active + 1> lastPosition ? 0: active + 1
- items [ active].classList.add( 'active')
+function updateSlider() {
+  items.forEach((item, index) => item.classList.toggle('active', index === active))
+  dots.forEach((dot, index) => dot.classList.toggle('active', index === active))
+  if (number) {
+    number.textContent = String(active + 1).padStart(2, '0')
+  }
 }
 
-prevButton.onclick =( ) => {
-let itemOld = container.querySelector('.list. item. active')
- itemOld.classList.remove('active')
- 
- active = active - 1> lastPosition ? 0: active - 1
- items [ active].classList.add( 'active')
-}
+nextButton.addEventListener('click', () => {
+  active = active === items.length - 1 ? 0 : active + 1
+  updateSlider()
+})
+
+prevButton.addEventListener('click', () => {
+  active = active === 0 ? items.length - 1 : active - 1
+  updateSlider()
+})
+
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    active = index
+    updateSlider()
+  })
+})
+
+updateSlider()
 
